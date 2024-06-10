@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function SearchDoctor() {
   const [doctorName, setDoctorName] = useState("");
   const [doctors, setDoctors] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
       .get(`https://localhost:7062/api/doctor/${doctorName}`)
       .then((response) => {
-        console.log(response.data);
+        console.log("Doctors: " + JSON.stringify(response.data));
         setDoctors(response.data);
       })
       .catch((error) => {
@@ -30,7 +32,7 @@ function SearchDoctor() {
   //   }, []);
 
   return (
-    <div className="max-w-sm mx-auto p-4 bg-white rounded shadow-md">
+    <div className="max-w-lg mx-auto p-4 bg-white rounded shadow-md">
       <h1 className="text-2xl font-bold mb-4">Search Doctor</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -72,7 +74,15 @@ function SearchDoctor() {
                 <td>
                   <button
                     className="bg-gradient-to-r from-sky-500 to-indigo-500 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => bookAppointment(doctor.id)}
+                    onClick={() =>
+                      navigate("/book-appointment", {
+                        state: {
+                          id: doctor.id,
+                          name: doctor.name,
+                          specialization: doctor.specialization,
+                        },
+                      })
+                    }
                   >
                     Book Appointment
                   </button>

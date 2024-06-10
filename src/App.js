@@ -8,21 +8,30 @@ import BookAppointment from "./components/BookAppointment";
 import Appointments from "./components/Appointments";
 import { useContext, useEffect } from "react";
 import axios from "axios";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import store from "./store/store";
 
 function App() {
+  const user = useSelector((state) => state.user);
   return (
     <div className="App">
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
           <Route path="/" element={<PrivateRoute />}>
-            {/* <Route index element={<SearchDoctor />} /> */}
-            <Route path="/" element={<SearchDoctor />} />
+            <Route
+              path="/"
+              element={
+                user && user.Specialization == "" ? (
+                  <SearchDoctor />
+                ) : (
+                  <Appointments />
+                )
+              }
+            />
             <Route path="/book-appointment" element={<BookAppointment />} />
             <Route path="/appointments" element={<Appointments />} />
           </Route>
@@ -31,7 +40,6 @@ function App() {
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
-      );
     </div>
   );
 }

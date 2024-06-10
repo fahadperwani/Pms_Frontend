@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/actions";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -31,13 +32,14 @@ const Login = () => {
         "https://localhost:7062/api/user/login",
         dataToSend
       ); // Replace with your API endpoint
+      const decode = jwtDecode(response.data);
+      console.log(decode);
       setFormData({
         email: "",
         password: "",
         userType: "patient",
       });
-      dispatch(login(response.data));
-      console.log(response.data);
+      dispatch(login(response.data, decode));
       navigate("/");
       // Handle successful registration (e.g., redirect to login page)
     } catch (error) {
@@ -87,7 +89,7 @@ const Login = () => {
             required
           />
         </div>
-        <div className="flex gap-2">
+        {/* <div className="flex gap-2">
           <div className="flex items-center">
             <input
               type="radio"
@@ -116,9 +118,9 @@ const Login = () => {
               Patient
             </label>
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex items-center justify-between mb-4">
+        {/* <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <input
               type="checkbox"
@@ -132,7 +134,7 @@ const Login = () => {
           <a href="#" className="text-sm text-indigo-600 hover:underline">
             Forgot password?
           </a>
-        </div>
+        </div> */}
 
         <button
           type="submit"
