@@ -48,19 +48,20 @@ function Appointments() {
           </tr>
         </thead>
         <tbody>
-          {appointments.map((appointment) => (
-            <tr key={appointment.id}>
-              <td className="border px-4 py-2">
-                {user.isDoctor
-                  ? appointment.doctorName
-                  : appointment.patientName}
-              </td>
-              <td className="border px-4 py-2">
-                {appointment.doctorSpecialization}
-              </td>
-              <td className="border px-4 py-2">{appointment.date}</td>
-            </tr>
-          ))}
+          {appointments &&
+            appointments.map((appointment) => (
+              <tr key={appointment.id}>
+                <td className="border px-4 py-2">
+                  {user.isDoctor
+                    ? appointment.doctorName
+                    : appointment.patientName}
+                </td>
+                <td className="border px-4 py-2">
+                  {appointment.doctorSpecialization}
+                </td>
+                <td className="border px-4 py-2">{appointment.date}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
